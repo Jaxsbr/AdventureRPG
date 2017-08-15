@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <html lang="en">
+    <head>
+        <title>Adventure RPG</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">    	 
+        <link href="styles.css" type="text/css" rel="stylesheet"/>
+    </head>
+    <body>
+        <canvas id="canvas"></canvas>
+        <script src="js/game.js"></script>
+        <script>
+            window.onload = () => {
+
+                // TODO:
+                // State Management
+                // Asset Loading
+                // Rendering
+
+                var canvas = document.getElementById('canvas');
+                var game = new Game(canvas as HTMLCanvasElement);
+                game.start();
+
+                window.addEventListener('mousedown', function() { game.MouseDown(); } );
+                window.addEventListener('mouseup', function () { game.MouseUp(); });
+                window.addEventListener('mousemove', function (e) { game.MouseMove(e.clientX, e.clientY); });
+            };
+        </script>
+    </body>
+</html>
