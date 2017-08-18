@@ -1,6 +1,12 @@
 class MenuState implements GameStateInterface {
     game: Game;
     active: boolean;
+    stateManager: StateManager;
+    
+    constructor(game: Game, stateManger: StateManager) {
+        this.game = game;
+        this.stateManager = stateManger;
+    }
 
     update(delta: number) {
         

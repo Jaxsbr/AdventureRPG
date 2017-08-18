@@ -5,10 +5,11 @@ class Game {
     canvas: HTMLCanvasElement;
     renderingContext: CanvasRenderingContext2D;
 
-    currentState: GameStateInterface = null;
+    stateManager: StateManager;
+    currentState: GameStateInterface;
     loadState: LoadState;
     menuState: MenuState;
-    worldState: GameStateInterface;
+    worldState: GameStateInterface;    
 
     constructor(canvas: HTMLCanvasElement) {
         this.canvas = canvas;    
@@ -30,10 +31,11 @@ class Game {
     }
 
     initGameStates() {
-        this.loadState = new LoadState();
-        this.menuState = new MenuState();
-        this.worldState = new WorldState();
-        this.currentState = this.loadState;
+        this.stateManager = new StateManager(this);
+        this.loadState = new LoadState(this, this.stateManager);
+        this.menuState = new MenuState(this, this.stateManager);
+        this.worldState = new WorldState(this, this.stateManager);
+        this.stateManager.changeGameState(this.loadState);
     }
 
     loop() {        
