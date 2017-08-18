@@ -1,5 +1,7 @@
 class Game {
 
+    gameTime: GameTime;
+
     canvas: HTMLCanvasElement;
     renderingContext: CanvasRenderingContext2D;
 
@@ -18,6 +20,7 @@ class Game {
     // Rendering
 
     start() {
+        this.gameTime = new GameTime();
         this.initCanvas();
         this.initGameStates();
     }
@@ -33,8 +36,17 @@ class Game {
         this.currentState = this.loadState;
     }
 
-    mouseDown() {
+    loop() {        
+        this.gameTime.update();
+        if (this.currentState) {
+            this.currentState.update(this.gameTime.delta);
+            this.currentState.render(this.renderingContext);
+        }
+        requestAnimationFrame(() => this.loop());
+    }
 
+    mouseDown() {
+        
     }
 
     mouseUp() {
@@ -43,13 +55,5 @@ class Game {
 
     mouseMove(x: number, y: number) {
 
-    }
-
-    loop() {        
-        if (this.currentState) {
-            this.currentState.update(0);
-            this.currentState.render(this.renderingContext);
-        }
-        requestAnimationFrame(() => this.loop());
     }
 }
