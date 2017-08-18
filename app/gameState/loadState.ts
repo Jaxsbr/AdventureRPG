@@ -2,10 +2,12 @@ class LoadState implements GameStateInterface {
     game: Game;
     active: boolean;
     stateManager: StateManager;
-
-    constructor(game: Game, stateManger: StateManager) {
+    renderWorker: RenderWorker;
+    
+    constructor(game: Game, stateManger: StateManager, renderWorker: RenderWorker) {
         this.game = game;
         this.stateManager = stateManger;
+        this.renderWorker = renderWorker;
     }
 
     update(delta: number) {
@@ -13,7 +15,7 @@ class LoadState implements GameStateInterface {
     }
 
     render(context: CanvasRenderingContext2D) {
-        
+        this.renderWorker.renderText(context, 'Load State', 100, 100);
     }
 
     mouseDown() {

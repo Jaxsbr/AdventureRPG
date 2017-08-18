@@ -4,6 +4,7 @@ class Game {
 
     canvas: HTMLCanvasElement;
     renderingContext: CanvasRenderingContext2D;
+    renderWorker: RenderWorker;
 
     stateManager: StateManager;
     currentState: GameStateInterface;
@@ -15,26 +16,23 @@ class Game {
         this.canvas = canvas;    
     }
 
-    // TODO:
-    // State Management
-    // Asset Loading
-    // Rendering
-
     start() {
         this.gameTime = new GameTime();
         this.initCanvas();
         this.initGameStates();
+        this.loop();
     }
 
     initCanvas() {
         this.renderingContext = this.canvas.getContext('2d');
+        this.renderWorker = new RenderWorker();        
     }
 
     initGameStates() {
         this.stateManager = new StateManager(this);
-        this.loadState = new LoadState(this, this.stateManager);
-        this.menuState = new MenuState(this, this.stateManager);
-        this.worldState = new WorldState(this, this.stateManager);
+        this.loadState = new LoadState(this, this.stateManager, this.renderWorker);
+        this.menuState = new MenuState(this, this.stateManager, this.renderWorker);
+        this.worldState = new WorldState(this, this.stateManager, this.renderWorker);
         this.stateManager.changeGameState(this.loadState);
     }
 
@@ -65,3 +63,15 @@ class Game {
         }
     }
 }
+
+
+window.onload = () => {
+    var canvas = document.getElementById('mycanvas');
+    console.log(canvas);
+    var game = new Game(canvas as HTMLCanvasElement);
+    game.start();
+
+    window.addEventListener('mousedown', function() { game.mouseDown(); } );
+    window.addEventListener('mouseup', function () { game.mouseUp(); });
+    window.addEventListener('mousemove', function (e) { game.mouseMove(e.clientX, e.clientY); });
+};

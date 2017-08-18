@@ -8,18 +8,16 @@
         <link href="styles.css" type="text/css" rel="stylesheet"/>
     </head>
     <body>
-        <canvas id="canvas"></canvas>
-        <script src="js/game.js"></script>
-        <script>
-            window.onload = () => {
-                var canvas = document.getElementById('canvas');
-                var game = new Game(canvas as HTMLCanvasElement);
-                game.start();
+        <canvas id="mycanvas"></canvas>
 
-                window.addEventListener('mousedown', function() { game.MouseDown(); } );
-                window.addEventListener('mouseup', function () { game.MouseUp(); });
-                window.addEventListener('mousemove', function (e) { game.MouseMove(e.clientX, e.clientY); });
-            };
-        </script>
+        <script src="app/utils/gameTime.js"></script>
+        <script src="app/utils/renderWorker.js"></script>
+        <script src="app/gameState/stateManager.js"></script>
+        <script src="app/gameState/gameState.interface.js"></script>
+        <script src="app/gameState/loadState.js"></script>
+        <script src="app/gameState/menuState.js"></script>
+        <script src="app/gameState/worldState.js"></script>
+        <script src="app/game.js"></script>
+
     </body>
 </html>
