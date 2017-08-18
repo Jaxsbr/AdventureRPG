@@ -38,7 +38,7 @@ class Game {
 
     loop() {        
         this.gameTime.update();
-        if (this.currentState) {
+        if (this.currentState && this.currentState.active) {
             this.currentState.update(this.gameTime.delta);
             this.currentState.render(this.renderingContext);
         }
@@ -46,14 +46,20 @@ class Game {
     }
 
     mouseDown() {
-        
+        if (this.currentState && this.currentState.active) {
+            this.currentState.mouseDown();
+        }
     }
 
     mouseUp() {
-        
+        if (this.currentState && this.currentState.active) {
+            this.currentState.mouseUp();
+        }
     }
 
     mouseMove(x: number, y: number) {
-
+        if (this.currentState && this.currentState.active) {
+            this.currentState.mouseMove(x, y);
+        }
     }
 }
