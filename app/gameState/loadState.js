@@ -3,11 +3,19 @@ var LoadState = (function () {
         this.game = game;
         this.stateManager = stateManger;
         this.renderWorker = renderWorker;
+        this.game.assetManager.init();
     }
     LoadState.prototype.update = function (delta) {
+        this.game.assetManager.update();
+        if (this.game.assetManager.loadCompleted) {
+            this.stateManager.changeGameState(this.game.menuState);
+        }
     };
     LoadState.prototype.render = function (context) {
-        this.renderWorker.renderText(context, 'Load State', 100, 100);
+        this.renderWorker.clear(context, this.game.screenBounds);
+        var text = 'Loading ' + this.game.assetManager.loadedAssets +
+            '/' + this.game.assetManager.totalAssets;
+        this.renderWorker.renderText(context, text, 100, 100);
     };
     LoadState.prototype.mouseDown = function () {
     };

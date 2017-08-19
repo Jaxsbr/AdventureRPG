@@ -1,0 +1,8 @@
+{
+    "imageAssets": [
+        { "key":"tilemap", "src":"app/assets/tilemap.png" },
+        { "key":"tilemap1", "src":"app/assets/tilemap.png" },
+        { "key":"tilemap2", "src":"app/assets/tilemap.png" }
+    ],
+    "jsonAssets": []
+}

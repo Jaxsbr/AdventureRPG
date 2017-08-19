@@ -4,6 +4,7 @@ var Game = (function () {
     }
     Game.prototype.start = function () {
         this.gameTime = new GameTime();
+        this.assetManager = new AssetManager();
         this.initCanvas();
         this.initGameStates();
         this.loop();
@@ -11,6 +12,7 @@ var Game = (function () {
     Game.prototype.initCanvas = function () {
         this.renderingContext = this.canvas.getContext('2d');
         this.renderWorker = new RenderWorker();
+        this.screenBounds = new Rectangle(0, 0, this.canvas.width, this.canvas.height);
     };
     Game.prototype.initGameStates = function () {
         this.stateManager = new StateManager(this);
