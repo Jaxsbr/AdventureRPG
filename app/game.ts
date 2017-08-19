@@ -30,7 +30,7 @@ class Game {
     initCanvas() {
         this.renderingContext = this.canvas.getContext('2d');
         this.renderWorker = new RenderWorker();        
-        this.screenBounds = new Rectangle(0, 0, this.canvas.width, this.canvas.height);
+        this.resize();        
     }
 
     initGameStates() {
@@ -67,16 +67,22 @@ class Game {
             this.currentState.mouseMove(x, y);
         }
     }
+
+    resize() {
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+        this.screenBounds = new Rectangle(0, 0, this.canvas.width, this.canvas.height);
+    }
 }
 
 
 window.onload = () => {
     var canvas = document.getElementById('mycanvas');
-    console.log(canvas);
     var game = new Game(canvas as HTMLCanvasElement);
     game.start();
 
     window.addEventListener('mousedown', function() { game.mouseDown(); } );
     window.addEventListener('mouseup', function () { game.mouseUp(); });
     window.addEventListener('mousemove', function (e) { game.mouseMove(e.clientX, e.clientY); });
+    window.addEventListener('resize', function () { game.resize(); });
 };

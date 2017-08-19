@@ -14,7 +14,9 @@ class LoadState implements GameStateInterface {
         this.game.assetManager.init();
     }
 
-
+    init() {
+        
+    }
 
     update(delta: number) {
         this.game.assetManager.update();

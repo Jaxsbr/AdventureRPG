@@ -10,11 +10,16 @@ class WorldState implements GameStateInterface {
         this.renderWorker = renderWorker;
     }
 
+    init() {
+        
+    }
+
     update(delta: number) {
         
     }    
 
     render(context: CanvasRenderingContext2D) {
+        this.renderWorker.clear(context, this.game.screenBounds); 
         this.renderWorker.renderText(context, 'World State', 100, 100);
     }    
 

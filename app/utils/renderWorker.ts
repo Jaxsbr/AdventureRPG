@@ -18,4 +18,10 @@ class RenderWorker {
 
         context.fillText(text, x, y);
     }
+
+    renderImage(context: CanvasRenderingContext2D, image: HTMLImageElement, x: number, y: number, width: number = null, height: number = null) {
+        var w = width == null ? image.width : width;
+        var h = height == null ? image.height : height;
+        context.drawImage(image, x, y, w, h);
+    }
 }

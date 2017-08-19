@@ -1,5 +1,5 @@
 class AssetManager {
-    images: ImageAsset[];
+    images: ImageAsset[] = [];
     totalAssets: number;
     loadedAssets: number;
     public loadCompleted: boolean;
@@ -34,14 +34,13 @@ class AssetManager {
         if (imageAssets) {
             this.totalAssets += imageAssets.length;
         }
-        let images: ImageAsset[] = [];
-
+        
         imageAssets.forEach(asset => {
             let image = new ImageAsset(this, asset.key, asset.src);
-            images.push(image);
+            this.images.push(image);
         });        
 
-        images.forEach(img => {
+        this.images.forEach(img => {
             img.init();
         });
     }
@@ -60,5 +59,21 @@ class AssetManager {
         if (this.totalAssets !== 0 && this.totalAssets === this.loadedAssets) {
             this.loadCompleted = true;
         }
+    }
+
+    getImage(key: string): HTMLImageElement {
+        // TODO:
+        // Test this for performance
+        // Possible replace with dictionary/hash mechanism
+
+        console.log('img count: ' + this.images.length);
+
+        let image = null;
+        this.images.forEach(img => {
+            if (img.key === key) {
+                image = img.image;
+            }
+        });
+        return image;
     }
 }

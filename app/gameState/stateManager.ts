@@ -12,6 +12,7 @@ class StateManager {
         if (newState) {
             this.game.currentState = newState;
             this.game.currentState.active = true;
+            this.game.currentState.init();
         }
     }
 }
