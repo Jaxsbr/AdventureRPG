@@ -7,6 +7,7 @@ var MenuState = (function () {
     MenuState.prototype.update = function (delta) {
     };
     MenuState.prototype.render = function (context) {
+        this.renderWorker.clear(context, this.game.screenBounds);
         this.renderWorker.renderText(context, 'Menu State', 100, 100);
     };
     MenuState.prototype.mouseDown = function () {

@@ -3,6 +3,7 @@ class Game {
     gameTime: GameTime;
 
     canvas: HTMLCanvasElement;
+    screenBounds: Rectangle;
     renderingContext: CanvasRenderingContext2D;
     renderWorker: RenderWorker;
 
@@ -12,20 +13,24 @@ class Game {
     menuState: MenuState;
     worldState: GameStateInterface;    
 
+    assetManager: AssetManager;
+
     constructor(canvas: HTMLCanvasElement) {
         this.canvas = canvas;    
     }
 
     start() {
         this.gameTime = new GameTime();
+        this.assetManager = new AssetManager();
         this.initCanvas();
-        this.initGameStates();
+        this.initGameStates();        
         this.loop();
     }
 
     initCanvas() {
         this.renderingContext = this.canvas.getContext('2d');
         this.renderWorker = new RenderWorker();        
+        this.screenBounds = new Rectangle(0, 0, this.canvas.width, this.canvas.height);
     }
 
     initGameStates() {

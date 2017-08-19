@@ -15,6 +15,7 @@ class MenuState implements GameStateInterface {
     }
 
     render(context: CanvasRenderingContext2D) {
+        this.renderWorker.clear(context, this.game.screenBounds);
         this.renderWorker.renderText(context, 'Menu State', 100, 100);
     }
 
