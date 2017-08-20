@@ -1,5 +1,6 @@
 class AssetManager {
     images: ImageAsset[] = [];
+    maps: MapAsset[] = [];
     totalAssets: number;
     loadedAssets: number;
     public loadCompleted: boolean;
@@ -13,17 +14,17 @@ class AssetManager {
 
     initAssets() {
         let imageAssets: string;
-        let jsonAssets: string;
+        let mapAssets: string;
         let request = new XMLHttpRequest();
 
         request.onload = event => {
             if (request.status === 200) {
                 let data = JSON.parse(request.responseText);
                 imageAssets = data.imageAssets;
-                jsonAssets = data.jsonAssets;
+                mapAssets = data.mapAssets;
 
                 this.initImages(imageAssets);
-                this.initJson(jsonAssets);
+                this.initMaps(mapAssets);
             }
         }
         request.open('get', 'app/assets/assetManifest.json', true);
@@ -45,13 +46,18 @@ class AssetManager {
         });
     }
 
-    initJson(jsonAssets: string) {
-        let jsonData: ImageAsset[] = [];
+    initMaps(mapAssets: any) {
+        if (mapAssets) {
+            this.totalAssets += mapAssets.length;
+        }        
 
-        console.log(jsonAssets);        
+        mapAssets.forEach(asset => {
+            let map = new MapAsset(this, asset.key, asset.src);
+            this.maps.push(map);
+        });      
 
-        jsonData.forEach(json => {
-             //img.init();
+        this.maps.forEach(map => {
+             map.init();
         });
     }
 
@@ -68,12 +74,28 @@ class AssetManager {
 
         console.log('img count: ' + this.images.length);
 
-        let image = null;
+        let image;
         this.images.forEach(img => {
             if (img.key === key) {
                 image = img.image;
             }
+        });     
+        return image;   
+    }
+
+    getMap(key: string): MapAsset {
+        // TODO:
+        // Test this for performance
+        // Possible replace with dictionary/hash mechanism
+
+        console.log('asset count: ' + this.maps.length);
+        
+        let map;
+        this.maps.forEach(mp => {
+            if (mp.key === key) {
+                map = mp;
+            }
         });
-        return image;
+        return map;
     }
 }

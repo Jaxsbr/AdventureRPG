@@ -3,6 +3,9 @@ class WorldState implements GameStateInterface {
     active: boolean;
     stateManager: StateManager;
     renderWorker: RenderWorker;
+
+    maps: string[];
+    currentMap: Map;
     
     constructor(game: Game, stateManger: StateManager, renderWorker: RenderWorker) {
         this.game = game;
@@ -12,6 +15,8 @@ class WorldState implements GameStateInterface {
 
     init() {
         
+        this.currentMap = new Map(this.game, this.stateManager, this.renderWorker);
+        this.currentMap.loadMap('map1');
     }
 
     update(delta: number) {
@@ -19,8 +24,9 @@ class WorldState implements GameStateInterface {
     }    
 
     render(context: CanvasRenderingContext2D) {
-        this.renderWorker.clear(context, this.game.screenBounds); 
+        this.renderWorker.clear(context, this.game.screenBounds);         
         this.renderWorker.renderText(context, 'World State', 100, 100);
+        this.currentMap.render(context);
     }    
 
     mouseDown() {

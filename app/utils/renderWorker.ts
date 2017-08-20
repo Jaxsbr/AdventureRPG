@@ -19,9 +19,28 @@ class RenderWorker {
         context.fillText(text, x, y);
     }
 
+    renderRect(context: CanvasRenderingContext2D, rect: Rectangle, color: string, fill:boolean) {
+        if (fill) {
+            context.fillStyle = color;
+            context.fillRect(rect.x, rect.y, rect.width, rect.height);
+        }
+        else {
+            context.beginPath();
+            context.strokeStyle = color;
+            context.strokeRect(rect.x, rect.y, rect.width, rect.height);            
+        }
+    }
+
     renderImage(context: CanvasRenderingContext2D, image: HTMLImageElement, x: number, y: number, width: number = null, height: number = null) {
         var w = width == null ? image.width : width;
         var h = height == null ? image.height : height;
         context.drawImage(image, x, y, w, h);
+    }
+
+    renderImageSource(context: CanvasRenderingContext2D, image: HTMLImageElement, sourceRect: Rectangle, destRect: Rectangle) {        
+        context.drawImage(
+            image,
+            sourceRect.x, sourceRect.y, sourceRect.width, sourceRect.height,
+            destRect.x, destRect.y, destRect.width, destRect.height);
     }
 }
