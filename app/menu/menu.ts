@@ -13,6 +13,11 @@ class Menu {
     ellapsed: number;
     helpText: string;
 
+
+    // TODO:
+    // Replace pulsing menu button calculation simple with animation.
+
+
     constructor(game: Game, stateManger: StateManager, renderWorker: RenderWorker) {
         this.game = game;
         this.stateManager = stateManger;
