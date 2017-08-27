@@ -2,7 +2,8 @@
     "imageAssets": [
         { "key":"tilemap", "src":"app/assets/tilemap.png" },
         { "key":"menuBackground", "src":"app/assets/menu.jpg" },
-        { "key":"play", "src":"app/assets/_playAnimation.png" }        
+        { "key":"play", "src":"app/assets/_playAnimation.png" },
+        { "key":"player", "src":"app/assets/player.png" }   
     ],
     "mapAssets": [
         { "key":"map1", "src":"app/assets/map1.json" }

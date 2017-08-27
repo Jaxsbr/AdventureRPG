@@ -18,6 +18,8 @@ class Map {
     tilemapImage: HTMLImageElement;
     tileLayers: TileLayer[] = [];
     
+    playerStartTile: Tile;
+    player: Player;
 
     constructor(game: Game, stateManger: StateManager, renderWorker: RenderWorker) {  
         this.game = game;
@@ -43,6 +45,7 @@ class Map {
         this.tilemapImage = this.game.assetManager.getImage(this.tileMapImageKey);
         this.calculateScreenOffset();
         this.loadMapTiles();
+        this.player = new Player(this.playerStartTile, this.game.assetManager);
     }
 
     calculateScreenOffset() {        
@@ -62,6 +65,10 @@ class Map {
                 let sourceCoords = this.getSourceCoordsFromIndex(index);
                 var tile = new Tile(this, this.tilemapImage, index, sourceCoords, col, row);
                 grid[row][col] = tile;
+
+                if (this.playerStartTile == null) {
+                    this.playerStartTile = tile;
+                }
 
                 col++;
                 if (col === this.tileCols) {
@@ -94,6 +101,8 @@ class Map {
         //this.renderWorker.renderText(context, 'Map', 100, 120);
         this.renderMapDepthEffects(context);
         this.renderLayers(context);
+
+        this.player.render(this.renderWorker, context);
     }  
 
     renderMapDepthEffects(context: CanvasRenderingContext2D) {
