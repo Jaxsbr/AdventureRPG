@@ -5,6 +5,6 @@
         { "key":"play", "src":"app/assets/_playAnimation.png" }        
     ],
     "mapAssets": [
-        { "key":"map1", "src":"app/assets/map.json" }
+        { "key":"map1", "src":"app/assets/map1.json" }
     ]
 }

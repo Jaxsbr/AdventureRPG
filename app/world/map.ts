@@ -2,6 +2,7 @@ class Map {
     game: Game;   
     stateManager: StateManager;
     renderWorker: RenderWorker; 
+    screenOffset: Point;
     //mapAsset: MapAsset;
 
     tileCols: number;
@@ -21,7 +22,8 @@ class Map {
     constructor(game: Game, stateManger: StateManager, renderWorker: RenderWorker) {  
         this.game = game;
         this.stateManager = stateManger;
-        this.renderWorker = renderWorker;
+        this.renderWorker = renderWorker;     
+        this.screenOffset = new Point(0, 0);   
     }
 
     loadMap(mapIndex: string) {
@@ -39,29 +41,75 @@ class Map {
         this.visualLayers = mapAsset.jsonRaw.visualLayers;
 
         this.tilemapImage = this.game.assetManager.getImage(this.tileMapImageKey);
+        this.calculateScreenOffset();
+    }
+
+    calculateScreenOffset() {        
+        this.screenOffset.x = this.game.screenBounds.getCenter().x - ((this.tileCols * this.tileWidth) / 2);
+        this.screenOffset.y = this.game.screenBounds.getCenter().y - ((this.tileRows * this.tileHeight) / 2);
     }
 
     update(delta: number) {
-        
+        this.calculateScreenOffset();
     }    
 
     render(context: CanvasRenderingContext2D) {        
-        this.renderWorker.renderText(context, 'Map', 100, 120);
+        //this.renderWorker.renderText(context, 'Map', 100, 120);
+        this.renderMapDepthEffects(context);
         this.renderLayers(context);
     }  
 
-    renderLayers(context: CanvasRenderingContext2D) {               
+    renderMapDepthEffects(context: CanvasRenderingContext2D) {
+        var mapWidth = this.tileCols * this.tileWidth;
+        var mapHeight = this.tileRows * this.tileHeight;
+
+        // Shadow
+        //context.save();
+        //context.shadowBlur = 20;
+        //context.shadowOffsetX = 0;
+        //context.shadowOffsetY = 0;
+        //context.shadowColor = 'black';
+
+        // Border        
+        this.renderWorker.renderRect(
+            context, 
+            new Rectangle(this.screenOffset.x - 1, this.screenOffset.y - 1, mapWidth + 2, mapHeight + 2),
+            'black', 
+            false);
+
+        //context.restore();
+    }
+
+    renderLayers(context: CanvasRenderingContext2D) {          
+        
+        // TODO:
+        // This structure from Tiled is a damn mess.
+        // Update logic to read from a 2d array instead
+
         this.visualLayers.forEach(data => {
             let row = 0;
             let col = 0;
-            data.forEach(val => {            
-                let sourceCoords = this.getSourceCoordsFromIndex(val as number);
 
-                this.renderWorker.renderImageSource(
-                    context,
-                    this.tilemapImage,
-                    new Rectangle(sourceCoords.x * this.tileMapTileWidth, sourceCoords.y * this.tileMapTileHeight, this.tileMapTileWidth, this.tileMapTileHeight),
-                    new Rectangle(col * this.tileWidth, row * this.tileHeight, this.tileWidth, this.tileHeight));
+            data.forEach(val => {            
+                let index = val as number;
+
+                if (index != -1) {
+                    let sourceCoords = this.getSourceCoordsFromIndex(index);
+
+                    this.renderWorker.renderImageSource(
+                        context,
+                        this.tilemapImage,
+                        new Rectangle(
+                            sourceCoords.x * this.tileMapTileWidth, 
+                            sourceCoords.y * this.tileMapTileHeight, 
+                            this.tileMapTileWidth, 
+                            this.tileMapTileHeight),
+                        new Rectangle(
+                            this.screenOffset.x + col * this.tileWidth, 
+                            this.screenOffset.y + row * this.tileHeight, 
+                            this.tileWidth, 
+                            this.tileHeight));
+                }
 
                 col++;
                 if (col === this.tileCols) {
@@ -70,6 +118,7 @@ class Map {
                     row++;
                 }
             })
+
         });
     }
 

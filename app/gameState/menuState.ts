@@ -39,4 +39,8 @@ class MenuState implements GameStateInterface {
         this.mousePoint.x = x;
         this.mousePoint.y = y;
     }
+    
+    resize() {
+        
+    }
 }

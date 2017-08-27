@@ -45,4 +45,8 @@ class LoadState implements GameStateInterface {
     mouseMove(x: number, y: number) {
 
     }
+
+    resize() {
+        
+    }
 }

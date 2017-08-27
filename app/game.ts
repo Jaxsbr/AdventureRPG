@@ -72,6 +72,10 @@ class Game {
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
         this.screenBounds = new Rectangle(0, 0, this.canvas.width, this.canvas.height);
+
+        if (this.currentState && this.currentState.active) {
+            this.currentState.resize();
+        }
     }
 }
 
