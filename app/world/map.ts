@@ -15,15 +15,15 @@ class Map {
     tileMapTileHeight: number;
     tileMapImageKey: string;
     visualLayers: any;
-
     tilemapImage: HTMLImageElement;
+    tileLayers: TileLayer[] = [];
     
 
     constructor(game: Game, stateManger: StateManager, renderWorker: RenderWorker) {  
         this.game = game;
         this.stateManager = stateManger;
         this.renderWorker = renderWorker;     
-        this.screenOffset = new Point(0, 0);   
+        this.screenOffset = new Point(0, 0);           
     }
 
     loadMap(mapIndex: string) {
@@ -42,11 +42,36 @@ class Map {
 
         this.tilemapImage = this.game.assetManager.getImage(this.tileMapImageKey);
         this.calculateScreenOffset();
+        this.loadMapTiles();
     }
 
     calculateScreenOffset() {        
         this.screenOffset.x = this.game.screenBounds.getCenter().x - ((this.tileCols * this.tileWidth) / 2);
         this.screenOffset.y = this.game.screenBounds.getCenter().y - ((this.tileRows * this.tileHeight) / 2);
+    }
+
+    loadMapTiles() {
+        this.visualLayers.forEach(data => {
+            let row = 0;
+            let col = 0;            
+            let grid: Tile[][] = [];
+            grid[0] = [];
+
+            data.forEach(val => {            
+                let index = val as number;                
+                let sourceCoords = this.getSourceCoordsFromIndex(index);
+                var tile = new Tile(this, this.tilemapImage, index, sourceCoords, col, row);
+                grid[row][col] = tile;
+
+                col++;
+                if (col === this.tileCols) {
+                    col = 0;
+                    row++;
+                    grid[row] = [];
+                }
+            })
+            this.tileLayers.push(new TileLayer(grid));
+        });
     }
 
     update(delta: number) {
@@ -83,42 +108,15 @@ class Map {
     renderLayers(context: CanvasRenderingContext2D) {          
         
         // TODO:
-        // This structure from Tiled is a damn mess.
-        // Update logic to read from a 2d array instead
+        // Add mechanism that checks if tiles need to be redrawn. e.g. resized
 
-        this.visualLayers.forEach(data => {
-            let row = 0;
-            let col = 0;
-
-            data.forEach(val => {            
-                let index = val as number;
-
-                if (index != -1) {
-                    let sourceCoords = this.getSourceCoordsFromIndex(index);
-
-                    this.renderWorker.renderImageSource(
-                        context,
-                        this.tilemapImage,
-                        new Rectangle(
-                            sourceCoords.x * this.tileMapTileWidth, 
-                            sourceCoords.y * this.tileMapTileHeight, 
-                            this.tileMapTileWidth, 
-                            this.tileMapTileHeight),
-                        new Rectangle(
-                            this.screenOffset.x + col * this.tileWidth, 
-                            this.screenOffset.y + row * this.tileHeight, 
-                            this.tileWidth, 
-                            this.tileHeight));
+        this.tileLayers.forEach(layer => {
+            for (let row = 0; row < this.tileRows; row++) {
+                for (let col = 0; col < this.tileCols; col++) {
+                    let tile = layer.grid[row][col];
+                    tile.render(this.renderWorker, context);
                 }
-
-                col++;
-                if (col === this.tileCols) {
-                    // Move to next row and reset col.
-                    col = 0;
-                    row++;
-                }
-            })
-
+            }
         });
     }
 
@@ -127,6 +125,10 @@ class Map {
         // Re look at this, find cleaner solution.
 
         let coord = new Point(-1, -1);
+        if (index == -1) {
+            return coord;
+        }
+
         let val = 0;
         for (let row = 0; row < this.tileMapRows; row++) {                    
             for (let col = 0; col < this.tileMapCols; col++) {
