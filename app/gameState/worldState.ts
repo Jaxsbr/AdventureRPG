@@ -53,6 +53,6 @@ class WorldState implements GameStateInterface {
     }
 
     resize() {
-        
+        this.currentMap.updateTiles();
     }
 }

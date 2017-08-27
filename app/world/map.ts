@@ -78,6 +78,18 @@ class Map {
         this.calculateScreenOffset();
     }    
 
+    updateTiles() {
+        this.calculateScreenOffset();
+        this.tileLayers.forEach(layer => {
+            for (let row = 0; row < this.tileRows; row++) {
+                for (let col = 0; col < this.tileCols; col++) {
+                    let tile = layer.grid[row][col];
+                    tile.update();
+                }
+            }
+        });
+    }
+
     render(context: CanvasRenderingContext2D) {        
         //this.renderWorker.renderText(context, 'Map', 100, 120);
         this.renderMapDepthEffects(context);
