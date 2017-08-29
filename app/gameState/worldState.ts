@@ -4,6 +4,8 @@ class WorldState implements GameStateInterface {
     stateManager: StateManager;
     renderWorker: RenderWorker;
 
+    mousePoint: Point;
+
     backgroundImage: HTMLImageElement;
 
     maps: string[];
@@ -13,6 +15,7 @@ class WorldState implements GameStateInterface {
         this.game = game;
         this.stateManager = stateManger;
         this.renderWorker = renderWorker;
+        this.mousePoint = new Point(0, 0);        
     }
 
     init() {
@@ -40,7 +43,9 @@ class WorldState implements GameStateInterface {
     }
 
     mouseDown() {
-
+        // TODO:
+        // Check mobile: TAP
+        this.currentMap.tap(this.mousePoint);
     }
 
     mouseUp() {
@@ -48,7 +53,8 @@ class WorldState implements GameStateInterface {
     }
 
     mouseMove(x: number, y: number) {
-
+        this.mousePoint.x = x;
+        this.mousePoint.y = y;
     }
 
     resize() {

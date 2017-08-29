@@ -10,9 +10,9 @@ class StateManager {
             this.game.currentState.active = false;
         }
         if (newState) {
-            this.game.currentState = newState;
-            this.game.currentState.active = true;
+            this.game.currentState = newState;            
             this.game.currentState.init();
+            this.game.currentState.active = true;
         }
     }
 }
