@@ -14,6 +14,7 @@ class CollisionTile {
         this.destination = new Rectangle(0,0,0,0);
         
         this.update();
+        this.destination.updatePosition(this.destination.x, this.destination.y);
     }
 
     update() {

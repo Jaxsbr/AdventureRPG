@@ -20,6 +20,19 @@ class Rectangle {
         this.bottom = this.y + this.height;
     }
 
+    adjustSize(width: number, height: number, adjustPosition: boolean) {
+        if (adjustPosition) {
+            this.x += width;
+            this.y += height;            
+            this.width += (2 * width);
+            this.height += (2 * height);
+        }
+        else {
+            this.width += width;
+            this.height += height;
+        }
+    }
+
     intersectRect(rectangle: Rectangle): boolean {
         return !(rectangle.x > this.right ||
                 rectangle.right < this.x ||
@@ -35,6 +48,7 @@ class Rectangle {
     }
 
     getCenter(): Point {
+        this.updatePosition(this.x, this.y);
         return new Point(
             this.right - this.width / 2, this.bottom - this.height / 2);
     }

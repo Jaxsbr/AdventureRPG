@@ -1,27 +1,82 @@
 class Player {    
-    tile: Tile;
+    map: Map;
+    tile: CollisionTile;
     bounds: Rectangle;
     image: HTMLImageElement;
     sourceRect: Rectangle;
 
-    constructor(tile: Tile, assetManager: AssetManager) {
+    targetReachedThresholdPixels: number = 0.5;
+    targetTile: CollisionTile;
+    velocity: Point;
+    moveSpeed: number = 50;
+
+    constructor(map: Map, tile: CollisionTile, assetManager: AssetManager) {
+        this.map = map;
         this.tile = tile;
-        this.bounds = new Rectangle(
-            this.tile.destination.x + 2,
-            this.tile.destination.y + 2,
-            this.tile.destination.width - 4,
-            this.tile.destination.height - 4);
+        // this.bounds = new Rectangle(
+        //     this.tile.destination.x + 2,
+        //     this.tile.destination.y + 2,
+        //     this.tile.destination.width - 4,
+        //     this.tile.destination.height - 4);
+        this.bounds = this.tile.destination;
+        //this.bounds.adjustSize(2, 2, true);
         this.image = assetManager.getImage('player');
         this.sourceRect = new Rectangle(0, 0, 64, 64);
+        this.velocity = new Point(0, 0);
 
-        this.bounds.updatePosition(
-            this.bounds.x + 64,
-            this.bounds.y + 64
-        )
+        // TEMP: 
+        //this.bounds.updatePosition(this.bounds.x + 64, this.bounds.y + 64)
+        //this.tile = this.getCurrentTile();
     }
 
-    update(delta: number) {
+    update(delta: number) {        
+        this.updateMovement(delta);
+        this.updatePosition(delta);        
+    }
 
+    updateMovement(delta: number) {
+        if (!this.targetTile) {
+            return;
+        }
+
+        this.tile = this.getCurrentTile();
+        let targetCenter = this.targetTile.destination.getCenter();
+        let playerCenter = this.bounds.getCenter();
+
+        if (this.targetTile === this.tile) {
+            // We are on the target tile, now hone in on the center.
+            var distanceFromTargetCenter = playerCenter.distanceBetween(targetCenter)
+
+            if (distanceFromTargetCenter <= this.targetReachedThresholdPixels) {
+                // On target, no movement required.
+                this.velocity.x = 0;
+                this.velocity.y = 0;                         
+                return;
+            }                        
+        }        
+
+        // Target not reached, calculate target velocity.
+        let direction = targetCenter.normalize(playerCenter);
+        this.velocity.x = direction.x * this.moveSpeed * delta;
+        this.velocity.y = direction.y * this.moveSpeed * delta;
+    }
+
+    updatePosition(delta: number) {
+        this.bounds.updatePosition(
+            this.bounds.x + this.velocity.x,
+            this.bounds.y + this.velocity.y);
+    }
+
+    getCurrentTile(): CollisionTile {
+        var center = this.bounds.getCenter();
+        var coords = new Point(
+            Math.floor((center.x - this.map.screenOffset.x) / this.map.tileWidth),
+            Math.floor((center.y - this.map.screenOffset.y) / this.map.tileHeight));
+        return this.map.collisionGrid[coords.y][coords.x]; 
+    }
+
+    movePlayer(targetTile: CollisionTile) {
+        this.targetTile = targetTile;
     }
 
     render(renderWorker: RenderWorker, context: CanvasRenderingContext2D) {

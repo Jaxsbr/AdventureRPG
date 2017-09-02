@@ -23,7 +23,7 @@ class Map {
 
     mapBounds: Rectangle;
 
-    playerStartTile: Tile;
+    playerStartTile: CollisionTile;
     player: Player;
 
     inputProcessing: boolean = false;
@@ -59,7 +59,7 @@ class Map {
         this.calculateScreenOffset();
         this.calculateMapBounds();
         this.loadMapTiles();
-        this.player = new Player(this.playerStartTile, this.game.assetManager);
+        this.player = new Player(this, this.playerStartTile, this.game.assetManager);
     }
 
     calculateScreenOffset() {        
@@ -91,6 +91,10 @@ class Map {
             var collisionTile = new CollisionTile(this, col, row, passable);
             this.collisionGrid[row][col] = collisionTile;
 
+            if (this.playerStartTile == null && passable) {
+                this.playerStartTile = collisionTile;
+            }
+
             col++;
             if (col === this.tileCols) {
                 col = 0;
@@ -115,10 +119,6 @@ class Map {
                 var tile = new Tile(this, this.tilemapImage, index, sourceCoords, col, row);
                 grid[row][col] = tile;
 
-                if (this.playerStartTile == null) {
-                    this.playerStartTile = tile;
-                }
-
                 col++;
                 if (col === this.tileCols) {
                     col = 0;
@@ -133,6 +133,7 @@ class Map {
     update(delta: number) {
         this.calculateScreenOffset();
         this.calculateMapBounds();
+        this.player.update(delta);
     }    
 
     updateTiles() {
@@ -182,9 +183,8 @@ class Map {
     }
 
     processPassableInput(collisionTile: CollisionTile) {
-        // TODO:
-        // Calculate path and trigger movement towards target
         this.target = collisionTile.destination;
+        this.player.movePlayer(collisionTile);
     }
 
     processImpassableInput(collisionTile: CollisionTile) {
