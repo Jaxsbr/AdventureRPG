@@ -53,6 +53,10 @@ class Rectangle {
             this.right - this.width / 2, this.bottom - this.height / 2);
     }
 
+    clone(): Rectangle {
+        return new Rectangle(this.x, this.y, this.width, this.height);
+    }
+
     equals(rect: Rectangle): boolean {
         return (this.x == rect.x &&
                 this.y == rect.y &&

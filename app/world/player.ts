@@ -12,13 +12,13 @@ class Player {
 
     constructor(map: Map, tile: CollisionTile, assetManager: AssetManager) {
         this.map = map;
-        this.tile = tile;
+        //this.tile = tile;
         // this.bounds = new Rectangle(
         //     this.tile.destination.x + 2,
         //     this.tile.destination.y + 2,
         //     this.tile.destination.width - 4,
         //     this.tile.destination.height - 4);
-        this.bounds = this.tile.destination;
+        this.bounds = tile.destination.clone();
         //this.bounds.adjustSize(2, 2, true);
         this.image = assetManager.getImage('player');
         this.sourceRect = new Rectangle(0, 0, 64, 64);
