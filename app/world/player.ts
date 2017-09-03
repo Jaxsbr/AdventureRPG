@@ -11,22 +11,13 @@ class Player {
     moveSpeed: number = 50;
 
     constructor(map: Map, tile: CollisionTile, assetManager: AssetManager) {
-        this.map = map;
-        //this.tile = tile;
-        // this.bounds = new Rectangle(
-        //     this.tile.destination.x + 2,
-        //     this.tile.destination.y + 2,
-        //     this.tile.destination.width - 4,
-        //     this.tile.destination.height - 4);
-        this.bounds = tile.destination.clone();
-        //this.bounds.adjustSize(2, 2, true);
+        this.map = map;        
+        this.tile = tile;
+        this.bounds = this.tile.destination.clone();
+        this.bounds.adjustSize(2, 2, true);
         this.image = assetManager.getImage('player');
         this.sourceRect = new Rectangle(0, 0, 64, 64);
         this.velocity = new Point(0, 0);
-
-        // TEMP: 
-        //this.bounds.updatePosition(this.bounds.x + 64, this.bounds.y + 64)
-        //this.tile = this.getCurrentTile();
     }
 
     update(delta: number) {        
@@ -65,6 +56,24 @@ class Player {
         this.bounds.updatePosition(
             this.bounds.x + this.velocity.x,
             this.bounds.y + this.velocity.y);
+    }
+
+    setPosition() {        
+        if (!this.targetTile) {
+            this.bounds.updatePosition(this.tile.destination.x, this.tile.destination.y);
+            return;
+        }
+        
+        if (this.tile == this.targetTile) {
+            // Player has stopped moving
+            this.bounds.updatePosition(this.targetTile.destination.x, this.targetTile.destination.y);
+            this.velocity.x = 0;
+            this.velocity.y = 0;
+        }
+        else {
+            // TODO:
+            // Reposition player acording to there movement position            
+        }
     }
 
     getCurrentTile(): CollisionTile {

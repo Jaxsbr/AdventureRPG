@@ -26,6 +26,8 @@ class Map {
     playerStartTile: CollisionTile;
     player: Player;
 
+    enemyEngine: EnemyEngine;
+
     inputProcessing: boolean = false;
     
     // TEMP
@@ -60,6 +62,7 @@ class Map {
         this.calculateMapBounds();
         this.loadMapTiles();
         this.player = new Player(this, this.playerStartTile, this.game.assetManager);
+        this.enemyEngine = new EnemyEngine(this, this.game);
     }
 
     calculateScreenOffset() {        
@@ -134,9 +137,10 @@ class Map {
         this.calculateScreenOffset();
         this.calculateMapBounds();
         this.player.update(delta);
+        this.enemyEngine.udpate(delta);
     }    
 
-    updateTiles() {
+    resize() {
         this.calculateScreenOffset();
         this.calculateMapBounds();
 
@@ -155,6 +159,11 @@ class Map {
                 }
             }
         });
+
+        // TODO:
+        // Provide resize vector
+        this.player.setPosition();
+        this.enemyEngine.resize();
     } 
 
     tap(point: Point) {
@@ -203,7 +212,9 @@ class Map {
             this.renderWorker.renderRect(context, this.target, 'red', true);
         }
 
+        // TODO: Remove renderworker form player render call
         this.player.render(this.renderWorker, context);
+        this.enemyEngine.render(context);
     } 
     
     renderMapDepthEffects(context: CanvasRenderingContext2D) {
