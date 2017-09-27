@@ -33,6 +33,13 @@ class Tile {
             this.tileMapImage,
             this.source,
             this.destination);
+
+        // TODO: Remove (used for debugging)
+        // renderWorker.renderRect(
+        //     context,
+        //     this.destination,
+        //     'black',
+        //     false);
     }
 
     update() {

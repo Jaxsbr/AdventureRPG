@@ -10,6 +10,9 @@ class Player {
     velocity: Point;
     moveSpeed: number = 50;
 
+    pathGenerator: PathGenerator;
+    pathTiles: PathTile[] = [];
+
     constructor(map: Map, tile: CollisionTile, assetManager: AssetManager) {
         this.map = map;        
         this.tile = tile;
@@ -18,6 +21,7 @@ class Player {
         this.image = assetManager.getImage('player');
         this.sourceRect = new Rectangle(0, 0, 64, 64);
         this.velocity = new Point(0, 0);
+        this.pathGenerator = new PathGenerator(this.map);
     }
 
     update(delta: number) {        
@@ -41,7 +45,8 @@ class Player {
             if (distanceFromTargetCenter <= this.targetReachedThresholdPixels) {
                 // On target, no movement required.
                 this.velocity.x = 0;
-                this.velocity.y = 0;                         
+                this.velocity.y = 0;            
+                this.nextTargetTile();             
                 return;
             }                        
         }        
@@ -56,6 +61,15 @@ class Player {
         this.bounds.updatePosition(
             this.bounds.x + this.velocity.x,
             this.bounds.y + this.velocity.y);
+    }
+
+    nextTargetTile () {
+        // TODO:
+        // Debug why player is not moving!!
+
+        if (this.pathTiles.length <= 0) { return; }
+        let next = this.pathTiles.pop();
+        this.targetTile = this.map.collisionGrid[next.coords.y][next.coords.x];
     }
 
     setPosition() {        
@@ -86,6 +100,12 @@ class Player {
 
     movePlayer(targetTile: CollisionTile) {
         this.targetTile = targetTile;
+        this.tile = this.getCurrentTile();
+        this.pathTiles = this.pathGenerator.getPathTilesToTarget(
+            new Point (this.tile.col, this.tile.row),
+            new Point (this.targetTile.col, this.targetTile.row));
+
+        this.nextTargetTile();
     }
 
     render(renderWorker: RenderWorker, context: CanvasRenderingContext2D) {

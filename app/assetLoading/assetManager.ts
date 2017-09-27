@@ -72,8 +72,6 @@ class AssetManager {
         // Test this for performance
         // Possible replace with dictionary/hash mechanism
 
-        console.log('img count: ' + this.images.length);
-
         let image;
         this.images.forEach(img => {
             if (img.key === key) {
@@ -86,9 +84,7 @@ class AssetManager {
     getMap(key: string): MapAsset {
         // TODO:
         // Test this for performance
-        // Possible replace with dictionary/hash mechanism
-
-        console.log('asset count: ' + this.maps.length);
+        // Possible replace with dictionary/hash mechanism        
         
         let map;
         this.maps.forEach(mp => {
