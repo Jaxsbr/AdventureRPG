@@ -15,6 +15,10 @@ class Enemy {
     center: Point;
     renderBounds: Rectangle;
 
+    gridSchema: Grid;
+
+    playerEngaged: boolean = false;
+
     constructor(map: Map, tile: CollisionTile, assetManager: AssetManager) {
         this.map = map;
         this.tile = tile;
@@ -27,14 +31,33 @@ class Enemy {
         this.setNextDirection();
         this.setDirectionRotation();
         this.renderBounds = new Rectangle(0, 0, this.bounds.width, this.bounds.height);
+
+        this.gridSchema = new Grid(this.map.tileCols, this.map.tileRows);
     }
 
     udpate(delta: number) {
         this.center = this.bounds.getCenter();
-        this.updateRotation(delta);
+        this.isPlayerDetected();
 
-        this.renderBounds.x = -(this.bounds.width / 2);
-        this.renderBounds.y = -(this.bounds.height / 2);        
+        if (!this.playerEngaged) {
+            this.updateRotation(delta);
+            this.updateRenderBounds();
+        }        
+    }
+
+    isPlayerDetected() {
+        let directionFacingTile = this.getDirectionFacingTileBound();
+
+        if (directionFacingTile.equals(this.map.player.tile.destination)) {
+            this.playerEngaged = true;
+
+            // TODO: 
+            // Implement a ecounter engine that manages the state
+            // from interaction to turn based states.
+            // This can replace the direct call to player below.
+
+            this.map.player.enemyEncountered(this);
+        }
     }
 
     updateRotation(delta: number) {
@@ -43,6 +66,36 @@ class Enemy {
             this.rotationElapsed = 0;
             this.setNextDirection();
         }
+    }
+
+    updateRenderBounds() {
+        this.renderBounds.x = -(this.bounds.width / 2);
+        this.renderBounds.y = -(this.bounds.height / 2);        
+    }
+
+    getDirectionFacingTileBound(): Rectangle {
+        let coordX = this.tile.col;
+        let coordY = this.tile.row;
+
+        switch (this.direction) {
+            case Direction.North:
+            coordY -= 1;
+            break;
+            case Direction.East:
+            coordX += 1;
+            break;
+            case Direction.South:
+            coordY += 1;
+            break;
+            case Direction.West:
+            coordX -= 1;
+            break;
+        }
+
+        if (this.gridSchema.isXYCoordsValid(coordX, coordY)) {
+            return this.map.collisionGrid[coordY][coordX].destination;
+        }
+        return this.tile.destination;
     }
 
     setNextDirection() {

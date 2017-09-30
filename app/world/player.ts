@@ -63,6 +63,10 @@ class Player {
             this.bounds.y + this.velocity.y);
     }
 
+    enemyEncountered(enemy: Enemy) {
+        
+    }
+
     nextTargetTile () {
         // TODO:
         // Debug why player is not moving!!

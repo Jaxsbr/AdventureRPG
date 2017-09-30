@@ -207,10 +207,18 @@ class Map {
         this.renderMapDepthEffects(context);
         this.renderLayers(context);
 
-        // TEMP
+        // TEMP: Players target rectangle
         if (this.target) {
             this.renderWorker.renderRect(context, this.target, 'red', true);
         }
+        // TEMP: Players next target rectangle
+        if (this.player.targetTile) {
+            this.renderWorker.renderRect(context, this.player.targetTile.destination, 'yellow', true);
+        };
+        // TEMP: Players next target rectangle
+        if (this.player.tile) {
+            this.renderWorker.renderRect(context, this.player.tile.destination, 'blue', true);
+        };
 
         // TODO: Remove renderworker form player render call
         this.player.render(this.renderWorker, context);
@@ -238,7 +246,7 @@ class Map {
         //context.restore();
     }
 
-    renderLayers(context: CanvasRenderingContext2D) {          
+    renderLayers(context: CanvasRenderingContext2D) {
         
         // TODO:
         // Add mechanism that checks if tiles need to be redrawn. e.g. resized
