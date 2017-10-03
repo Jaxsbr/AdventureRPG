@@ -50,13 +50,7 @@ class Enemy {
 
         if (directionFacingTile.equals(this.map.player.tile.destination)) {
             this.playerEngaged = true;
-
-            // TODO: 
-            // Implement a ecounter engine that manages the state
-            // from interaction to turn based states.
-            // This can replace the direct call to player below.
-
-            this.map.player.enemyEncountered(this);
+            this.map.enemyEngine.playerEncountered(this);
         }
     }
 

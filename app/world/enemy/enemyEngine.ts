@@ -5,6 +5,8 @@ class EnemyEngine {
     enemies: Enemy[] = [];
     relevantEnemyIndexes: number[] = [];
 
+    encounteredEnemy: Enemy;
+
     constructor(map: Map, game: Game) {
         this.map = map;
         this.game = game;
@@ -15,6 +17,7 @@ class EnemyEngine {
     }
 
     udpate(delta: number) {
+        if (this.encounteredEnemy != null) { return; }
         this.udpateRelevantEnemies(delta)
     }
 
@@ -26,8 +29,16 @@ class EnemyEngine {
             if (this.isRelevant(i)) {
                 this.relevantEnemyIndexes.push(i);
                 this.enemies[i].udpate(delta);
+
+                // If player encountered and enemy we stop normal updates
+                if (this.encounteredEnemy != null) { break; }
             }
         }
+    }
+
+    playerEncountered(enemy: Enemy) {      
+        this.encounteredEnemy = enemy;  
+        this.game.stateManager.changeGameState(this.game.matchState);
     }
 
     isRelevant(index: number) {

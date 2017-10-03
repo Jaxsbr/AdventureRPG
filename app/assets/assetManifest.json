@@ -2,6 +2,7 @@
     "imageAssets": [
         { "key":"tilemap", "src":"app/assets/tilemap.png" },
         { "key":"menuBackground", "src":"app/assets/menu.jpg" },
+        { "key":"matchBackground", "src":"app/assets/match.jpg" },
         { "key":"play", "src":"app/assets/_playAnimation.png" },
         { "key":"player", "src":"app/assets/player.png" },
         { "key":"enemy", "src":"app/assets/enemy.png" }   

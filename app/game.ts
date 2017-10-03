@@ -9,9 +9,11 @@ class Game {
 
     stateManager: StateManager;
     currentState: GameStateInterface;
+
     loadState: LoadState;
     menuState: MenuState;
-    worldState: GameStateInterface;    
+    worldState: WorldState;    
+    matchState: MatchState;
 
     assetManager: AssetManager;
 
@@ -38,6 +40,7 @@ class Game {
         this.loadState = new LoadState(this, this.stateManager, this.renderWorker);
         this.menuState = new MenuState(this, this.stateManager, this.renderWorker);
         this.worldState = new WorldState(this, this.stateManager, this.renderWorker);
+        this.matchState = new MatchState(this, this.stateManager, this.renderWorker);
         this.stateManager.changeGameState(this.loadState);
     }
 
