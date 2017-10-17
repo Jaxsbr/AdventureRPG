@@ -31,6 +31,10 @@ class RenderWorker {
         }
     }
 
+    renderImageRect(context: CanvasRenderingContext2D, image: HTMLImageElement, bounds: Rectangle) {
+        this.renderImage(context, image, bounds.x, bounds.y, bounds.width, bounds.height);
+    }
+
     renderImage(context: CanvasRenderingContext2D, image: HTMLImageElement, x: number, y: number, width: number = null, height: number = null) {
         var w = width == null ? image.width : width;
         var h = height == null ? image.height : height;
