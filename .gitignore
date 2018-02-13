@@ -8,7 +8,6 @@
 *.user
 *.userosscache
 *.sln.docstates
-*.js
 *.js.map
 
 # User-specific files (MonoDevelop/Xamarin Studio)
