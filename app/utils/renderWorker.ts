@@ -43,21 +43,10 @@ class RenderWorker {
 
     renderImageSource(context: CanvasRenderingContext2D, image: HTMLImageElement, sourceRect: Rectangle, destRect: Rectangle) {        
         if (sourceRect.x < 0 || sourceRect.y < 0 || sourceRect.height <= 0 || sourceRect.height <= 0) { return; }        
-
-        try {
-            context.drawImage(
-                image,
-                sourceRect.x, sourceRect.y, sourceRect.width, sourceRect.height,
-                destRect.x, destRect.y, destRect.width, destRect.height);   
-        } catch (error) {
-            console.log("sourceX: " + sourceRect.x);
-            console.log("sourceY: " + sourceRect.x);
-            console.log("sourceW: " + sourceRect.x);
-            console.log("sourceH: " + sourceRect.x);
-            console.log("destX: " + destRect.x);
-            console.log("destY: " + destRect.y);
-            console.log("destW: " + destRect.width);
-            console.log("destH: " + destRect.height);
-        }
+        
+        context.drawImage(
+            image,
+            sourceRect.x, sourceRect.y, sourceRect.width, sourceRect.height,
+            destRect.x, destRect.y, destRect.width, destRect.height);           
     }
 }
