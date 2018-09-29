@@ -29,8 +29,8 @@ class Menu {
 
     updateButtonPosition() {
         let center = this.game.screenBounds.getCenter();
-        let top = center.y - this.playButtonRect.height / 2;
-        let left = center.x - this.playButtonRect.width / 2;
+        let top = Math.round(center.y - this.playButtonRect.height / 2);
+        let left = Math.round(center.x - this.playButtonRect.width / 2);
         this.playButtonRect.updatePosition(left, top);        
     }
 

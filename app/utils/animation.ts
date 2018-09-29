@@ -30,7 +30,7 @@ class Animation {
         this.updateFrameIndex(delta);
 
         // NOTE: Only supports single row sprite sheets.
-        this.sourceBounds.x = Math.round(this.frameIndex * this.frameWidth);
+        this.sourceBounds.x = this.frameIndex * this.frameWidth;
         this.sourceBounds.y = 0;
         this.sourceBounds.width = this.frameWidth;
         this.sourceBounds.height = this.frameHeight;

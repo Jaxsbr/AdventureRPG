@@ -14,8 +14,8 @@ var Menu = (function () {
     };
     Menu.prototype.updateButtonPosition = function () {
         var center = this.game.screenBounds.getCenter();
-        var top = center.y - this.playButtonRect.height / 2;
-        var left = center.x - this.playButtonRect.width / 2;
+        var top = Math.round(center.y - this.playButtonRect.height / 2);
+        var left = Math.round(center.x - this.playButtonRect.width / 2);
         this.playButtonRect.updatePosition(left, top);
     };
     Menu.prototype.render = function (context) {
