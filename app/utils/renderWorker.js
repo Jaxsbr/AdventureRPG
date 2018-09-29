@@ -39,7 +39,25 @@ var RenderWorker = (function () {
         context.drawImage(image, x, y, w, h);
     };
     RenderWorker.prototype.renderImageSource = function (context, image, sourceRect, destRect) {
-        context.drawImage(image, sourceRect.x, sourceRect.y, sourceRect.width, sourceRect.height, destRect.x, destRect.y, destRect.width, destRect.height);
+        if (sourceRect.width > image.width) {
+            console.log("source rect bounds issue");
+        }
+        if (sourceRect.height > image.height) {
+            console.log("source rect bounds issue");
+        }
+        try {
+            context.drawImage(image, sourceRect.x, sourceRect.y, sourceRect.width, sourceRect.height, destRect.x, destRect.y, destRect.width, destRect.height);
+        }
+        catch (error) {
+            console.log("sourceX: " + sourceRect.x);
+            console.log("sourceY: " + sourceRect.x);
+            console.log("sourceW: " + sourceRect.x);
+            console.log("sourceH: " + sourceRect.x);
+            console.log("destX: " + destRect.x);
+            console.log("destY: " + destRect.y);
+            console.log("destW: " + destRect.width);
+            console.log("destH: " + destRect.height);
+        }
     };
     return RenderWorker;
 }());
