@@ -42,8 +42,7 @@ class RenderWorker {
     }
 
     renderImageSource(context: CanvasRenderingContext2D, image: HTMLImageElement, sourceRect: Rectangle, destRect: Rectangle) {        
-        if (sourceRect.width > image.width) { console.log("source rect bounds issue"); }
-        if (sourceRect.height > image.height) { console.log("source rect bounds issue"); }
+        if (sourceRect.x < 0 || sourceRect.y < 0 || sourceRect.height <= 0 || sourceRect.height <= 0) { return; }        
 
         try {
             context.drawImage(

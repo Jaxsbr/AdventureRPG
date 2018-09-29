@@ -39,11 +39,8 @@ var RenderWorker = (function () {
         context.drawImage(image, x, y, w, h);
     };
     RenderWorker.prototype.renderImageSource = function (context, image, sourceRect, destRect) {
-        if (sourceRect.width > image.width) {
-            console.log("source rect bounds issue");
-        }
-        if (sourceRect.height > image.height) {
-            console.log("source rect bounds issue");
+        if (sourceRect.x < 0 || sourceRect.y < 0 || sourceRect.height <= 0 || sourceRect.height <= 0) {
+            return;
         }
         try {
             context.drawImage(image, sourceRect.x, sourceRect.y, sourceRect.width, sourceRect.height, destRect.x, destRect.y, destRect.width, destRect.height);
