@@ -42,6 +42,12 @@ var MatchState = (function () {
         this.playerRect.width = this.game.screenBounds.width / 18;
         this.playerRect.height = this.game.screenBounds.height / 9;
     };
+    MatchState.prototype.completeMath = function () {
+        // TODO:
+        // 1) If player kills enemy >> Destroy enemy from world state
+        // 2) If enemy kills player >> Reset game >> Show game end screen/score >> Show game menu
+        this.stateManager.changeGameState(this.game.worldState);
+    };
     return MatchState;
 }());
 //# sourceMappingURL=matchState.js.map

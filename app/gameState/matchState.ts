@@ -57,7 +57,7 @@ class MatchState implements GameStateInterface {
     }
 
     mouseUp() {
-
+        
     }
 
     mouseMove(x: number, y: number) {
@@ -71,5 +71,12 @@ class MatchState implements GameStateInterface {
 
         this.playerRect.width = this.game.screenBounds.width / 18;
         this.playerRect.height = this.game.screenBounds.height / 9;
+    }
+
+    completeMath() {
+        // TODO:
+        // 1) If player kills enemy >> Destroy enemy from world state
+        // 2) If enemy kills player >> Reset game >> Show game end screen/score >> Show game menu
+        this.stateManager.changeGameState(this.game.worldState);
     }
 }

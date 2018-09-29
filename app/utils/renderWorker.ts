@@ -44,7 +44,7 @@ class RenderWorker {
     renderImageSource(context: CanvasRenderingContext2D, image: HTMLImageElement, sourceRect: Rectangle, destRect: Rectangle) {        
         context.drawImage(
             image,
-            sourceRect.x, sourceRect.y, sourceRect.width, sourceRect.height,
+            sourceRect.x, sourceRect.y, Math.round(sourceRect.width), Math.round(sourceRect.height),
             destRect.x, destRect.y, destRect.width, destRect.height);
     }
 }
