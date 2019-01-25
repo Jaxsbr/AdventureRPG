@@ -2,7 +2,18 @@
     "version": "2.0.0",
     "command": "Chrome",
     "windows": {
-        "command": "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
+        "command": "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+        "options": {
+            "shell": {
+                "executable": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+                "args": [
+                    "-NoProfile",
+                    "-ExecutionPolicy",
+                    "Bypass",
+                    "-Command"
+                ]
+            }
+        }
     },
     "args": [
         "http://localhost:321/"
@@ -18,6 +29,15 @@
             "group": {
                 "kind": "build",
                 "isDefault": true
+            }
+        },
+        {
+            "label": "PublishToIIS",
+            "type": "shell",
+            "command": "Invoke-PSake ./deploy/Publish.ps1 -docs",            
+            "group": {
+                "kind": "build",
+                "isDefault": true                
             }
         }
     ]

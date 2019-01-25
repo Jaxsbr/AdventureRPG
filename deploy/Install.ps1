@@ -29,6 +29,7 @@
                         
         $invocation = (Get-Variable MyInvocation).Value
         $directoryPath = Split-Path $invocation.MyCommand.Path
+        $directoryPath = $directoryPath.replace("\deploy", "")
         
         Set-Location IIS:\AppPools\
         
@@ -50,7 +51,7 @@
         
         Write-Host "Creating site" -ForegroundColor Yellow
 
-        $iisApp = New-Item $iisAppName -Bindings @{protocol="http"; bindingInformation=":80:" + $hostName} -PhysicalPath $directoryPath
+        $iisApp = New-Item $iisAppName -Bindings @{protocol="http"; bindingInformation=":321:" + $hostName} -PhysicalPath $directoryPath
         $iisApp | Set-ItemProperty -Name "applicationPool" -Value $iisAppPoolName
 
         if ($hostName -ne "localhost") {
@@ -65,6 +66,6 @@
         Write-Host "Install completed" -ForegroundColor Yellow
         
         if ($autoLaunchOnCompletion) {
-            Start-Process -FilePath ("http://{0}/" -f $hostName)
+            Start-Process -FilePath ("http://{0}:321/" -f $hostName)
         }
     }
