@@ -1,13 +1,13 @@
 # AdventureRPG
 > RPG style game written in type script
 
-The goal with this project is for me to learn
+The goal with this project is for me to learn:
 - Typescript
 - Game structure
 - RPG mechanics & techniques
 
 ## Build
-- Open the project with VS Code. Custom build step is include that allows TS transpalition. (ctrl+shift
+- Open the project with VS Code. Custom build step is included that allows TS transpalition. (ctrl+shift+b)
 - The 'deploy' folder contains scripts that allow both publish and IIS installation.
 
 ## Installation
